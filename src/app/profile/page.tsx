@@ -16,7 +16,12 @@ import type { Profile } from "@/types/profile";
 
 import { updateDisplayName } from "./actions";
 
-export default async function ProfilePage() {
+type PageProps = {
+  searchParams: Promise<{ error?: string; saved?: string }>;
+};
+
+export default async function ProfilePage({ searchParams }: PageProps) {
+  const sp = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -62,6 +67,16 @@ export default async function ProfilePage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {sp.error ? (
+              <p className="mb-4 text-sm text-destructive" role="alert">
+                {sp.error}
+              </p>
+            ) : null}
+            {sp.saved === "1" ? (
+              <p className="mb-4 text-sm text-green-700 dark:text-green-400" role="status">
+                저장했습니다.
+              </p>
+            ) : null}
             <form action={updateDisplayName} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">이메일 (읽기 전용)</Label>

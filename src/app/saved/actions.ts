@@ -17,7 +17,7 @@ export async function saveQrCode(content: string, note: string) {
 
   const sanitized = sanitizeQrInput(content);
   if (!sanitized.ok) {
-    return { error: sanitized.error as const };
+    return { error: sanitized.error };
   }
 
   const n = note.trim().slice(0, 200);
@@ -41,7 +41,7 @@ export async function saveQrCode(content: string, note: string) {
           "저장용 테이블(saved_qr_codes)이 Supabase에 없습니다. 저장소의 supabase/migrations/20250322120000_saved_qr_codes.sql 을 SQL Editor에서 실행하세요." as const,
       };
     }
-    return { error: error.message as const };
+    return { error: error.message };
   }
 
   revalidatePath("/saved");
@@ -75,7 +75,7 @@ export async function deleteSavedQr(id: string) {
           "저장용 테이블이 없습니다. supabase/migrations/20250322120000_saved_qr_codes.sql 을 Supabase SQL Editor에서 실행하세요." as const,
       };
     }
-    return { error: error.message as const };
+    return { error: error.message };
   }
 
   revalidatePath("/saved");
